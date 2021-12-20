@@ -27,5 +27,7 @@ public class CreateEnemiesSystem : IExecuteSystem
         enemyEntity.AddMoveSpeed(300);
         enemyEntity.AddSprite("round");
         enemyEntity.AddPosition(Random.Range(-700, 700), 600);
+
+        _timePassedAfterSpawn = 0;
     }
 }

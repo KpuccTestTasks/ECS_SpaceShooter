@@ -10,12 +10,15 @@ public class GameSetup : MonoBehaviour
     private void Start()
     {
         Contexts contexts = Contexts.sharedInstance;
+        UnityTimeService timeService = new UnityTimeService();
 
         _systems = new Feature()
-            .Add(new AddGameViewSystem(contexts, _views))
-            .Add(new RenderSpriteSystem(contexts))
             .Add(new KeyboardInputSystem(contexts))
-            .Add(new PlayerMoveSystem(contexts, new UnityTimeService()))
+            .Add(new CreateEnemiesSystem(contexts, timeService))
+            .Add(new AddGameViewSystem(contexts, _views))
+            .Add(new PlayerMoveSystem(contexts, timeService))
+            .Add(new EnemiesMoveSystem(contexts, timeService))
+            .Add(new RenderSpriteSystem(contexts))
             .Add(new RenderMoveSystem(contexts));
 
         contexts.game.isPlayer = true;

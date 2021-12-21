@@ -27,6 +27,8 @@ public class AddGameViewSystem : ReactiveSystem<GameEntity>
         foreach (var entity in entities)
         {
             var go = new GameObject("View");
+            var unityView = go.AddComponent<UnityView>();
+            unityView.Setup(entity);
             go.transform.SetParent(_viewsParent);
             entity.AddView(go);
             go.Link(entity);

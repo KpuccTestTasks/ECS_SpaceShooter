@@ -26,6 +26,12 @@ public class EnemiesMoveSystem : IExecuteSystem
         foreach (var entity in _enemiesCache)
         {
             var newPositionY = entity.position.PositionY - entity.moveSpeed.Value * timeDelta;
+
+            if (newPositionY < -500)
+            {
+                entity.isDestroy = true;
+                continue;
+            }
             
             entity.ReplacePosition(entity.position.PositionX, newPositionY);
         }

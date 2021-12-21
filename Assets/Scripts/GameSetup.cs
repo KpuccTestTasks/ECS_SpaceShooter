@@ -19,7 +19,9 @@ public class GameSetup : MonoBehaviour
             .Add(new PlayerMoveSystem(contexts, timeService))
             .Add(new EnemiesMoveSystem(contexts, timeService))
             .Add(new RenderSpriteSystem(contexts))
-            .Add(new RenderMoveSystem(contexts));
+            .Add(new RenderMoveSystem(contexts))
+            .Add(new DestroyEventSystem(contexts))
+            .Add(new DestroyEntitySystem(contexts));
 
         contexts.game.isPlayer = true;
         

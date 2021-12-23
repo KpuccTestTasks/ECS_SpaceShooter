@@ -1,18 +1,23 @@
 ﻿using UnityEngine;
 using Entitas;
+using Entitas.Unity;
 
 public class CreateEnemiesSystem : IExecuteSystem
 {
     private GameContext _gameContext;
     private ITimeService _timeService;
+    private IInstantiateService _instantiateService;
     private float _timePassedAfterSpawn;
+    private object _transform;
 
     private const int SpawnEnemyDelay = 3;
     
-    public CreateEnemiesSystem(Contexts contexts, ITimeService timeService)
+    public CreateEnemiesSystem(Contexts contexts, object transform)
     {
         _gameContext = contexts.game;
-        _timeService = timeService;
+        _timeService = contexts.meta.timeService.TimeService;
+        _instantiateService = contexts.meta.instantiateService.InstantiateService;
+        _transform = transform;
     }
     
     public void Execute()
@@ -25,8 +30,14 @@ public class CreateEnemiesSystem : IExecuteSystem
         var enemyEntity = _gameContext.CreateEntity();
         enemyEntity.isEnemy = true;
         enemyEntity.AddMoveSpeed(300);
-        enemyEntity.AddSprite("round");
+        
+        // убрать рандом в сервис юнити
         enemyEntity.AddPosition(Random.Range(-700, 700), 600);
+
+        var enemyBehaviour = _instantiateService.InstantiateGameObject("Enemy", _transform).GetComponent<EnemyBehaviour>();
+        enemyBehaviour.gameObject.Link(enemyEntity);
+        enemyBehaviour.SetupBehaviour(enemyEntity);
+        enemyEntity.AddView(enemyBehaviour.gameObject);
 
         _timePassedAfterSpawn = 0;
     }

@@ -10,27 +10,23 @@ public class GameSetup : MonoBehaviour
     private void Start()
     {
         Contexts contexts = Contexts.sharedInstance;
-        UnityTimeService timeService = new UnityTimeService();
 
+        var metaContext = contexts.meta;
+        metaContext.ReplaceInstantiateService(new UnityInstantiate());
+        metaContext.ReplaceTimeService(new UnityTimeService());
+        
         _systems = new Feature()
+            .Add(new SetupPlayerSystem(contexts, _views))
+            .Add(new CreateEnemiesSystem(contexts, _views))
             .Add(new KeyboardInputSystem(contexts))
-            .Add(new CreateEnemiesSystem(contexts, timeService))
-            .Add(new AddGameViewSystem(contexts, _views))
-            .Add(new PlayerMoveSystem(contexts, timeService))
-            .Add(new EnemiesMoveSystem(contexts, timeService))
-            .Add(new RenderSpriteSystem(contexts))
+            .Add(new CreateBulletSystem(contexts, _views))
+            .Add(new PlayerMoveSystem(contexts))
+            .Add(new EnemiesMoveSystem(contexts))
+            .Add(new BulletMoveSystem(contexts))
             .Add(new RenderMoveSystem(contexts))
-            .Add(new DestroyEventSystem(contexts))
+            .Add(new DestroyedEventSystem(contexts))
             .Add(new DestroyEntitySystem(contexts));
 
-        contexts.game.isPlayer = true;
-        
-        var playerEntity = contexts.game.playerEntity;
-        playerEntity.isPlayer = true;
-        playerEntity.AddMoveSpeed(500);
-        playerEntity.AddPosition(0,-490);
-        playerEntity.AddSprite("rectangle");
-        
         _systems.Initialize();
     }
 

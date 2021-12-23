@@ -5,6 +5,7 @@ public class KeyboardInputSystem : IInitializeSystem, IExecuteSystem
 {
     private InputEntity _moveRightButton;
     private InputEntity _moveLeftButton;
+    private InputEntity _shootButton;
     private InputContext _inputContexts;
 
     public KeyboardInputSystem(Contexts contexts)
@@ -23,16 +24,23 @@ public class KeyboardInputSystem : IInitializeSystem, IExecuteSystem
 
     public void Execute()
     {
-        if (Input.GetKeyDown("d"))
-            _moveRightButton.isButtonDown = true;
-        
-        if (Input.GetKeyUp("d"))
-            _moveRightButton.isButtonDown = false;
-        
-        if (Input.GetKeyDown("a"))
-            _moveLeftButton.isButtonDown = true;
-        
-        if (Input.GetKeyUp("a"))
-            _moveLeftButton.isButtonDown = false;
+        UpdateInputEntityState(_moveRightButton, "d");
+        UpdateInputEntityState(_moveLeftButton, "a");
+
+        if (Input.GetKeyDown("space"))
+        {
+            var inputShootEntity = _inputContexts.CreateEntity();
+            inputShootEntity.isButtonDown = true;
+            inputShootEntity.isShootButton = true;
+        }
+    }
+
+    private void UpdateInputEntityState(InputEntity entity, string keyName)
+    {
+        if (Input.GetKeyDown(keyName))
+            entity.isButtonDown = true;
+
+        if (Input.GetKeyUp(keyName))
+            entity.isButtonDown = false;
     }
 }

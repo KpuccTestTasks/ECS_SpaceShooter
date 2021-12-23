@@ -3,16 +3,14 @@ using Entitas;
 
 public class EnemiesMoveSystem : IExecuteSystem
 {
-    private GameContext _gameContext;
     private IGroup<GameEntity> _enemies;
     private List<GameEntity> _enemiesCache = new List<GameEntity>();
     private ITimeService _timeService;
 
-    public EnemiesMoveSystem(Contexts contexts, ITimeService timeService)
+    public EnemiesMoveSystem(Contexts contexts)
     {
-        _gameContext = contexts.game;
-        _enemies = _gameContext.GetGroup(GameMatcher.AllOf(GameMatcher.Enemy, GameMatcher.View, GameMatcher.MoveSpeed, GameMatcher.Position));
-        _timeService = timeService;
+        _enemies = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.Enemy, GameMatcher.View, GameMatcher.MoveSpeed, GameMatcher.Position));
+        _timeService = contexts.meta.timeService.TimeService;
     }
     
     public void Execute()
@@ -29,7 +27,7 @@ public class EnemiesMoveSystem : IExecuteSystem
 
             if (newPositionY < -500)
             {
-                entity.isDestroy = true;
+                entity.isDestroyed = true;
                 continue;
             }
             

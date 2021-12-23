@@ -9,11 +9,11 @@ public class PlayerMoveSystem : IExecuteSystem
     private List<GameEntity> _playerCache = new List<GameEntity>();
     private ITimeService _timeService;
     
-    public PlayerMoveSystem(Contexts contexts, ITimeService timeService)
+    public PlayerMoveSystem(Contexts contexts)
     {
         _gameContext = contexts.game;
         _inputContext = contexts.input;
-        _timeService = timeService;
+        _timeService = contexts.meta.timeService.TimeService;
     }
     
     public void Execute()

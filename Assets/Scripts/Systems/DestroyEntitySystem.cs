@@ -8,7 +8,7 @@ public class DestroyEntitySystem : ICleanupSystem
     
     public DestroyEntitySystem(Contexts contexts)
     {
-        _destroyedGroup = contexts.game.GetGroup(GameMatcher.Destroy);
+        _destroyedGroup = contexts.game.GetGroup(GameMatcher.Destroyed);
     }
 
     public void Cleanup()

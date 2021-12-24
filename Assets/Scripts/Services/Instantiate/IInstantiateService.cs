@@ -2,5 +2,5 @@
 
 public interface IInstantiateService
 {
-    GameObject InstantiateGameObject(string prefabPath, object transform);
+    GameObject InstantiateGameObject(string prefabPath);
 }

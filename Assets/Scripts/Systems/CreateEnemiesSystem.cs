@@ -8,16 +8,14 @@ public class CreateEnemiesSystem : IExecuteSystem
     private ITimeService _timeService;
     private IInstantiateService _instantiateService;
     private float _timePassedAfterSpawn;
-    private object _transform;
 
     private const int SpawnEnemyDelay = 3;
     
-    public CreateEnemiesSystem(Contexts contexts, object transform)
+    public CreateEnemiesSystem(Contexts contexts)
     {
         _gameContext = contexts.game;
         _timeService = contexts.meta.timeService.TimeService;
         _instantiateService = contexts.meta.instantiateService.InstantiateService;
-        _transform = transform;
     }
     
     public void Execute()
@@ -34,7 +32,7 @@ public class CreateEnemiesSystem : IExecuteSystem
         // убрать рандом в сервис юнити
         enemyEntity.AddPosition(Random.Range(-700, 700), 600);
 
-        var enemyBehaviour = _instantiateService.InstantiateGameObject("Enemy", _transform).GetComponent<EnemyBehaviour>();
+        var enemyBehaviour = _instantiateService.InstantiateGameObject("Enemy").GetComponent<EnemyBehaviour>();
         enemyBehaviour.gameObject.Link(enemyEntity);
         enemyBehaviour.SetupBehaviour(enemyEntity);
         enemyEntity.AddView(enemyBehaviour.gameObject);

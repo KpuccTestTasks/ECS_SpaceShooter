@@ -12,14 +12,14 @@ public class GameSetup : MonoBehaviour
         Contexts contexts = Contexts.sharedInstance;
 
         var metaContext = contexts.meta;
-        metaContext.ReplaceInstantiateService(new UnityInstantiate());
+        metaContext.ReplaceInstantiateService(new UnityInstantiate(_views));
         metaContext.ReplaceTimeService(new UnityTimeService());
         
         _systems = new Feature()
-            .Add(new SetupPlayerSystem(contexts, _views))
-            .Add(new CreateEnemiesSystem(contexts, _views))
+            .Add(new SetupPlayerSystem(contexts))
+            .Add(new CreateEnemiesSystem(contexts))
             .Add(new KeyboardInputSystem(contexts))
-            .Add(new CreateBulletSystem(contexts, _views))
+            .Add(new CreateBulletSystem(contexts))
             .Add(new PlayerMoveSystem(contexts))
             .Add(new EnemiesMoveSystem(contexts))
             .Add(new BulletMoveSystem(contexts))

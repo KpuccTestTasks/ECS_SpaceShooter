@@ -6,13 +6,11 @@ public class CreateBulletSystem : ReactiveSystem<InputEntity>
 {
     private GameContext _gameContext;
     private MetaContext _metaContext;
-    private object _views;
 
-    public CreateBulletSystem(Contexts contexts, object views) : base(contexts.input)
+    public CreateBulletSystem(Contexts contexts) : base(contexts.input)
     {
         _gameContext = contexts.game;
         _metaContext = contexts.meta;
-        _views = views;
     }
 
     protected override ICollector<InputEntity> GetTrigger(IContext<InputEntity> context)
@@ -39,8 +37,7 @@ public class CreateBulletSystem : ReactiveSystem<InputEntity>
             bulletEntity.AddMoveSpeed(1000);
 
             var bulletSpawnerPosition = playerEntity.view.View.GetComponent<PlayerBehaviour>().GetBulletSpawnerPosition();
-            var bulletView = _metaContext.instantiateService.InstantiateService.InstantiateGameObject("Bullet",
-                _views);
+            var bulletView = _metaContext.instantiateService.InstantiateService.InstantiateGameObject("Bullet");
             bulletEntity.AddView(bulletView);
             bulletEntity.AddPosition(bulletSpawnerPosition.x + playerEntity.position.PositionX, bulletSpawnerPosition.y + playerEntity.position.PositionY);
             bulletView.gameObject.Link(bulletEntity);

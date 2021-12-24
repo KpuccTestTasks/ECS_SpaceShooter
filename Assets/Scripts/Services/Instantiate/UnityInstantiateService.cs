@@ -2,8 +2,15 @@
 
 public class UnityInstantiate : IInstantiateService
 {
-    public GameObject InstantiateGameObject(string path, object transform)
+    private Transform _instantiatetransform;
+
+    public UnityInstantiate(Transform instantiatePlace)
     {
-        return GameObject.Instantiate(Resources.Load<GameObject>(path), (Transform)transform);
+        _instantiatetransform = instantiatePlace;
+    }
+    
+    public GameObject InstantiateGameObject(string path)
+    {
+        return GameObject.Instantiate(Resources.Load<GameObject>(path), _instantiatetransform);
     }
 }
